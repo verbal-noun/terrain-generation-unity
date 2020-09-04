@@ -418,9 +418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1dc720fccc328643944731ece601300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initHeight: 60
-  maxHeight: 60
-  startingRandomHeight: 60
+  initHeight: 10
+  startingRandomHeight: 39
   size: 65
 --- !u!4 &1422216838
 Transform:
