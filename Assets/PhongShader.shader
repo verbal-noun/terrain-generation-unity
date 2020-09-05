@@ -43,7 +43,7 @@ Shader "PhongShader" {
             struct appdata
             {
                 float4 vertex : POSITION;
-                float4 normal : NORMAL; 
+                float3 normal : NORMAL; 
                 float2 uv : TEXCOORD0;
             
             };
@@ -53,7 +53,7 @@ Shader "PhongShader" {
                 float4 pos : POSITION;
                 float3 normal : NORMAL; 
                 float2 uv: TEXCOORD0; 
-                float posWorld : TEXCOORD1; 
+                float4 posWorld : TEXCOORD1; 
             }; 
 
             // Transforming the position of vertices 
@@ -61,13 +61,11 @@ Shader "PhongShader" {
             {
                 v2f o; 
                 // Calculating the world positon of our object 
-                o.posWorld = mul(unity_ObjectToWorld, v.vertex)
+                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 //Calculating the normal 
-                o.normal = normalize(mul(float4(v.normal, 0.0), unity_ObjectToWorld).xyz);
+                o.normal = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz);
                 // Updating the position 
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.us, _Tex); 
-
                 return o; 
             }
 
@@ -83,9 +81,10 @@ Shader "PhongShader" {
                 float3 lightDirection = _WorldSpaceLightPos0.xyz - i.posWorld.xyz * _WorldSpaceLightPos0.w;
 
                 // Ambient component 
-                float3 ambientLighting = UNITY_LIGHTMODEL_AMBIENT.rgb * _Color.rgb;
+                float3 ambientLighting = UNITY_LIGHTMODEL_AMBIENT.rgb * _Colour.rgb;
                 // Diffuse component 
-                float3 diffuseReflection = _LightColor0.rgb * _Color.rgb * max(0.0, dot(normalDirection, lightDirection));   
+                float3 diffuseReflection = _LightColor0.rgb * _Colour.rgb * 
+                max(0.0, dot(normalDirection, lightDirection));   
                 // Specular component 
                 float3 specularReflection;
                 // If Light's coming from opposite, no specular - no reflection 
@@ -95,12 +94,12 @@ Shader "PhongShader" {
                 }
                 else 
                 {
-                    specularReflection = attenuation * _LightColor0.rgb * _SpecColor.rgb * 
+                    specularReflection = _LightColor0.rgb * _SpecColour.rgb * 
                     pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), _Shininess);
                 }
 
                 // Calculating colour based on the three components 
-                float3 color = (ambientLighting + diffuseReflection + specularReflection)
+                float3 color = (ambientLighting + diffuseReflection + specularReflection);
                 return float4(color, 1.0);
             }
 
