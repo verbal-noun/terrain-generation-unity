@@ -419,8 +419,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initHeight: 10
-  startingRandomHeight: 39
-  size: 65
+  startingRandomHeight: 10
+  n: 6
 --- !u!4 &1422216838
 Transform:
   m_ObjectHideFlags: 0
