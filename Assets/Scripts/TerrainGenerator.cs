@@ -3,13 +3,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
 public class TerrainGenerator : MonoBehaviour
 {
     public float initHeight = 60f;
     [Range(5, 30)]
     public float startingRandomHeight = 10f;
-    public int size = 65;
+    public int n = 6;
+    private int size;
 
     private float randomHeight;
 
@@ -32,7 +32,7 @@ public class TerrainGenerator : MonoBehaviour
     {
         Mesh m = new Mesh();
         m.name = "Terrain";
-
+        size = (int) (Mathf.Pow(2, n)+1);
         Vector3[,] nodes = new Vector3[size, size];
         for (int x = 0; x < size; x++){ 
             for (int z = 0; z < size; z++){
