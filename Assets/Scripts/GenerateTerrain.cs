@@ -38,7 +38,7 @@ public class GenerateTerrain : MonoBehaviour
                 vertices[z*size+x] = new Vector3(x, startHeight, z);
             }
         }
-        RecursiveDSquare(0, size-1, size*(size-1), size*size-1, maxHeightDiff);
+        RecursiveDSquare(size-1, maxHeightDiff);
     
         triangles = new int[(size-1)*(size-1)*6];
         for (int z=0; z<size-1; z++) {
@@ -53,32 +53,33 @@ public class GenerateTerrain : MonoBehaviour
         }
     }
 
-    void RecursiveDSquare(int botL, int botR, int topL, int topR, float heightDiff) {
-        if (botL == botR - 1) {
+    void RecursiveDSquare(int dim, float heightDiff) {
+        if (dim == 1) {
             return;
         }
-        // if (heightDiff <= maxHeightDiff*0.7*0.7*0.7*0.7) {
-        //     return;
-        // }
-        int left = (int) ((topL-botL)/2+botL);
-        int dim = botR-botL;
-        int centre = (int) (left+dim/2);
-        DiamondStep(centre, dim, size, heightDiff);
-        int top = (int) (centre+size*(dim/2));
-        int bot = (int) (centre-size*(dim/2));
-        int right = (int) (centre+(dim/2));
-        SqaureStep(top, dim, size, heightDiff);
-        SqaureStep(bot, dim, size, heightDiff);
-        SqaureStep(left, dim, size, heightDiff);
-        SqaureStep(right, dim, size, heightDiff);
 
+        for (int z = 0; z < size-1; z+=dim){
+            for (int x = 0; x < size-1; x+=dim){
+                int centre = (int) ((z*size+x) + (dim*0.5*size + dim*0.5));
+                DiamondStep(centre, dim, heightDiff);
+            }
+        }
+        
+        for (int z = (int) (dim*0.5); z < size; z += dim) {
+            for (int x = 0; x < size; x += dim){
+                SquareStep(z*size + x, dim, heightDiff);
+            }
+        }
+        
+        for (int z = 0; z < size; z += dim) {
+            for (int x = (int) (dim*0.5); x < size; x += dim) {
+                SquareStep(z*size + x, dim, heightDiff);
+            }
+        }
         float newHeightDiff = (float) (heightDiff*heightDepreciation);
-        RecursiveDSquare(left, centre, topL, top, newHeightDiff);
-        RecursiveDSquare(centre, right, top, topR, newHeightDiff);
-        RecursiveDSquare(botL, bot, left, centre, newHeightDiff);
-        RecursiveDSquare(bot, botR, centre, right, newHeightDiff);
+        RecursiveDSquare((int) (dim*0.5), newHeightDiff);
     }
-    void DiamondStep(int centre, int dim, int size, float heightDiff) {
+    void DiamondStep(int centre, int dim, float heightDiff) {
         int botL = (int) (centre-(size+1)*(dim/2));
         int botR = (int) (centre-(size-1)*(dim/2));
         int topL = (int) (centre+(size-1)*(dim/2));
@@ -93,7 +94,7 @@ public class GenerateTerrain : MonoBehaviour
         Vector3 v = vertices[centre];
         vertices[centre] = new Vector3(v.x, newY , v.z);
     }
-    void SqaureStep(int centre, int dim, int size, float heightDiff) {
+    void SquareStep(int centre, int dim, float heightDiff) {
         int top = (int) (centre+size*(dim/2));
         int bot = (int) (centre-size*(dim/2));
         int left = (int) (centre-(dim/2));
