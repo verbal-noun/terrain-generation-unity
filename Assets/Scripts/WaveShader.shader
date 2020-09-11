@@ -9,7 +9,11 @@ Shader "Unlit/WaveShader"
 	}
 	SubShader
 	{
-		Tags { "LightMode" = "ForwardBase" }
+		Tags {"Queue"="Transparent" "RenderType"="Transparent" }
+		
+		ZWrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
+		
 		Pass
 		{
 
