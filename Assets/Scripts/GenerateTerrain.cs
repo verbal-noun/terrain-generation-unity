@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 public class GenerateTerrain : MonoBehaviour
 {
-    Mesh mesh;
     public int n=2;
     public int startHeight = 2;
     public float maxHeightDiff = 2.0f;
@@ -12,12 +11,13 @@ public class GenerateTerrain : MonoBehaviour
     private int size;
     private int numVertices;
     private System.Random random = new System.Random();
+
+    Mesh mesh;
+    MeshCollider meshCollider;
     Vector3[] vertices;
     int[] triangles;
 
-    MeshCollider meshCollider;
-    // Start is called before the first frame update
-    void Start()
+        void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh; 
@@ -25,9 +25,9 @@ public class GenerateTerrain : MonoBehaviour
         UpdateMesh();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Generate new terrain when space is pressed
         if (Input.GetKeyDown("space")) {
             MakeTerrain();
             UpdateMesh();
