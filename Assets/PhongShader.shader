@@ -12,6 +12,9 @@ Shader "PhongShader" {
         _Shininess ("Shininess", Float) = 10 
         // Hightlights colour 
         _SpecColour ("Specular Colour", Color) = (1, 1, 1, 1) 
+
+        // Texture 
+        _Tex ("Pattern", 2D) = "white" {} 
     }
 
     SubShader {
@@ -34,6 +37,9 @@ Shader "PhongShader" {
             // UnityCG 
             uniform float4 _LightColor0;
 
+            //Used for texture
+            sampler2D _Tex; 
+            //For tiling 
             float4 _Tex_ST; 
 
             uniform float4 _Colour;
@@ -66,6 +72,8 @@ Shader "PhongShader" {
                 o.normal = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz);
                 // Updating the position 
                 o.pos = UnityObjectToClipPos(v.vertex);
+                // UVs for mapping the texture 
+                o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 return o; 
             }
 
@@ -99,7 +107,8 @@ Shader "PhongShader" {
                 }
 
                 // Calculating colour based on the three components 
-                float3 color = (ambientLighting + diffuseReflection + specularReflection);
+                //float3 color = (ambientLighting + diffuseReflection + specularReflection);
+                float3 color = (ambientLighting + diffuseReflection) * tex2D(_Tex, i.uv);
                 return float4(color, 1.0);
             }
 
