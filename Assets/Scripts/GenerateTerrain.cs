@@ -4,9 +4,9 @@ using UnityEngine;
 using System;
 public class GenerateTerrain : MonoBehaviour
 {
-    public int n=2;
-    public int startHeight = 2;
-    public float maxHeightDiff = 2.0f;
+    public int n=7;
+    public int startHeight = 5;
+    public float maxHeightDiff = 6.0f;
     public float heightDepreciation = 0.7f;
     private int size;
     private int numVertices;
@@ -17,7 +17,7 @@ public class GenerateTerrain : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
-        void Start()
+    void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh; 
