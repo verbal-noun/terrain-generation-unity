@@ -15,11 +15,12 @@ public class GenerateTerrain : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
+    MeshCollider meshCollider;
     // Start is called before the first frame update
     void Start()
     {
         mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        GetComponent<MeshFilter>().mesh = mesh; 
         MakeTerrain();
         UpdateMesh();
     }
@@ -27,7 +28,10 @@ public class GenerateTerrain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown("space")) {
+            MakeTerrain();
+            UpdateMesh();
+        }
     }
     void MakeTerrain() {
         size = (int)Math.Pow(2, n)+1;
@@ -135,6 +139,7 @@ public class GenerateTerrain : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
+        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
     // private void OnDrawGizmos() {
