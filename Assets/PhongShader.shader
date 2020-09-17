@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 // Implementation of the Phong Illumination Model 
 
 Shader "PhongShader" {
@@ -12,6 +10,9 @@ Shader "PhongShader" {
         _Shininess ("Shininess", Float) = 10 
         // Hightlights colour 
         _SpecColour ("Specular Colour", Color) = (1, 1, 1, 1) 
+
+        // Texture 
+        _Tex ("Pattern", 2D) = "white" {} 
     }
 
     SubShader {
@@ -34,6 +35,9 @@ Shader "PhongShader" {
             // UnityCG 
             uniform float4 _LightColor0;
 
+            //Used for texture
+            sampler2D _Tex; 
+            //For tiling 
             float4 _Tex_ST; 
 
             uniform float4 _Colour;
@@ -66,6 +70,8 @@ Shader "PhongShader" {
                 o.normal = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz);
                 // Updating the position 
                 o.pos = UnityObjectToClipPos(v.vertex);
+                // UVs for mapping the texture 
+                o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 return o; 
             }
 
@@ -80,26 +86,17 @@ Shader "PhongShader" {
                 float oneOverDistance = 1.0 / length(vert2LightSource);
                 float3 lightDirection = _WorldSpaceLightPos0.xyz - i.posWorld.xyz * _WorldSpaceLightPos0.w;
 
+                //Attenunation 
+                float attenuation = lerp(1.0, oneOverDistance, _WorldSpaceLightPos0.w); 
+
                 // Ambient component 
                 float3 ambientLighting = UNITY_LIGHTMODEL_AMBIENT.rgb * _Colour.rgb;
                 // Diffuse component 
                 float3 diffuseReflection = _LightColor0.rgb * _Colour.rgb * 
-                max(0.0, dot(normalDirection, lightDirection));   
-                // Specular component 
-                float3 specularReflection;
-                // If Light's coming from opposite, no specular - no reflection 
-                if (dot(i.normal, lightDirection) < 0.0) 
-                {
-                    specularReflection = float3(0.0, 0.0, 0.0);
-                }
-                else 
-                {
-                    specularReflection = _LightColor0.rgb * _SpecColour.rgb * 
-                    pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), _Shininess);
-                }
+                max(0.0, dot(normalDirection, lightDirection)) * attenuation;   
 
                 // Calculating colour based on the three components 
-                float3 color = (ambientLighting + diffuseReflection + specularReflection);
+                float3 color = (ambientLighting + diffuseReflection) * tex2D(_Tex, i.uv);
                 return float4(color, 1.0);
             }
 
