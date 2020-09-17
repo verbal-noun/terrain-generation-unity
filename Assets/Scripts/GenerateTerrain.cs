@@ -1,8 +1,7 @@
-﻿using System;
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 public class GenerateTerrain : MonoBehaviour
 {
     public int n=7;
@@ -11,7 +10,7 @@ public class GenerateTerrain : MonoBehaviour
     public float heightDepreciation = 0.7f;
     private int size;
     private int numVertices;
-    private System.Random random = new System.Random ();
+    // private System.Random random = new System.Random ();
 
     Mesh mesh;
     MeshCollider meshCollider;
@@ -36,7 +35,7 @@ public class GenerateTerrain : MonoBehaviour
     }
 
     void MakeTerrain () {
-        size = (int) Math.Pow (2, n) + 1;
+        size = (int) Mathf.Pow (2, n) + 1;
         numVertices = size * size;
         vertices = new Vector3[numVertices];
 
@@ -118,7 +117,8 @@ public class GenerateTerrain : MonoBehaviour
             vertices[topL].y + vertices[topR].y) / 4);
 
         // add random value to average height
-        float newY = (float) (average + random.NextDouble () * 2 * heightDiff - heightDiff);
+        // float newY = average + random.NextDouble () * 2 * heightDiff - heightDiff);
+        float newY = average + Random.Range(-heightDiff, heightDiff);
         if (newY < 0) {
             newY = 0;
         }
@@ -160,7 +160,7 @@ public class GenerateTerrain : MonoBehaviour
 
         // find average and calculate new height
         float average = (float) (totalHeight / validVertices);
-        float newY = (float) (average + random.NextDouble () * 2 * heightDiff - heightDiff);
+        float newY = average + Random.Range(-heightDiff, heightDiff);
         if (newY < 0) {
             newY = 0;
         }
