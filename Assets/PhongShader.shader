@@ -8,8 +8,6 @@ Shader "PhongShader" {
         
         // Shininess 
         _Shininess ("Shininess", Float) = 10 
-        // Hightlights colour 
-        _SpecColour ("Specular Colour", Color) = (1, 1, 1, 1) 
 
         // Texture 
         _Tex ("Pattern", 2D) = "white" {} 
@@ -44,7 +42,7 @@ Shader "PhongShader" {
             uniform float4 _SpecColour;
             uniform float _Shininess;
 
-            struct appdata
+            struct vertIn
             {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL; 
@@ -52,7 +50,7 @@ Shader "PhongShader" {
             
             };
 
-            struct v2f
+            struct vertOut
             {
                 float4 pos : POSITION;
                 float3 normal : NORMAL; 
@@ -61,9 +59,9 @@ Shader "PhongShader" {
             }; 
 
             // Transforming the position of vertices 
-            v2f vert(appdata v)
+            vertOut vert(vertIn v)
             {
-                v2f o; 
+                vertOut o; 
                 // Calculating the world positon of our object 
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 //Calculating the normal 
@@ -76,7 +74,7 @@ Shader "PhongShader" {
             }
 
             // Updating the colour 
-            fixed4 frag(v2f i) : COLOR 
+            fixed4 frag(vertOut i) : COLOR 
             {
                 float3 normalDirection = normalize(i.normal);
                 // Our eye will be the main camera 
