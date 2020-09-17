@@ -6,6 +6,7 @@ Shader "Unlit/WaveShader"
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_Color ("Color", Color) = (1, 1, 1, 1)
+		_WaveHeight ("WaveHeight", float) = 2.0 
 	}
 	SubShader
 	{
@@ -46,6 +47,7 @@ Shader "Unlit/WaveShader"
 			};
 
 			fixed4 _Color;
+			float _WaveHeight;
 
 			// Contains code from workshop - 5 solution 
 			vertOut vert(vertIn v)
@@ -53,7 +55,7 @@ Shader "Unlit/WaveShader"
 				float4 worldVertex = mul(unity_ObjectToWorld, v.vertex);
 				float3 worldNormal = normalize(mul(transpose((float3x3)unity_WorldToObject), v.normal.xyz));
 				
-				float amplitude = 3.0f;
+				float amplitude = _WaveHeight;
 				float4 displacement = float4(0.0f, amplitude * sin(v.vertex.x + v.vertex.z + _Time.z), 0.0f, 0.0f);
 				v.vertex += displacement;
 
