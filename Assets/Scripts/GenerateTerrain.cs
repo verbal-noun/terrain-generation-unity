@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class GenerateTerrain : MonoBehaviour {
-    public int n = 2;
-    public int startHeight = 2;
-    public float maxHeightDiff = 2.0f;
+using System;
+public class GenerateTerrain : MonoBehaviour
+{
+    public int n=7;
+    public int startHeight = 5;
+    public float maxHeightDiff = 6.0f;
     public float heightDepreciation = 0.7f;
     private int size;
     private int numVertices;
@@ -17,11 +19,12 @@ public class GenerateTerrain : MonoBehaviour {
     int[] triangles;
     Vector2[] uvs;
 
-    void Start () {
-        mesh = new Mesh ();
-        GetComponent<MeshFilter> ().mesh = mesh;
-        MakeTerrain ();
-        UpdateMesh ();
+    void Start()
+    {
+        mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh; 
+        MakeTerrain();
+        UpdateMesh();
     }
 
     void Update () {
