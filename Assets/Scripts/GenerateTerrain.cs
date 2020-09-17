@@ -119,9 +119,6 @@ public class GenerateTerrain : MonoBehaviour
         // add random value to average height
         // float newY = average + random.NextDouble () * 2 * heightDiff - heightDiff);
         float newY = average + Random.Range(-heightDiff, heightDiff);
-        if (newY < 0) {
-            newY = 0;
-        }
 
         // set to new height
         Vector3 v = vertices[centre];
@@ -161,10 +158,6 @@ public class GenerateTerrain : MonoBehaviour
         // find average and calculate new height
         float average = (float) (totalHeight / validVertices);
         float newY = average + Random.Range(-heightDiff, heightDiff);
-        if (newY < 0) {
-            newY = 0;
-        }
-
         // set new height
         Vector3 v = vertices[centre];
         vertices[centre] = new Vector3 (v.x, newY, v.z);

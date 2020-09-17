@@ -7,6 +7,7 @@ Shader "Unlit/WaveShader"
 		_MainTex ("Texture", 2D) = "white" {}
 		_Color ("Color", Color) = (1, 1, 1, 1)
 		_WaveHeight ("WaveHeight", float) = 2.0 
+		_WaveSize ("WaveSize", float) = 2.0
 	}
 	SubShader
 	{
@@ -48,6 +49,7 @@ Shader "Unlit/WaveShader"
 
 			fixed4 _Color;
 			float _WaveHeight;
+			float _WaveSize;
 
 			// Contains code from workshop - 5 solution 
 			vertOut vert(vertIn v)
@@ -56,7 +58,7 @@ Shader "Unlit/WaveShader"
 				float3 worldNormal = normalize(mul(transpose((float3x3)unity_WorldToObject), v.normal.xyz));
 				
 				float amplitude = _WaveHeight;
-				float4 displacement = float4(0.0f, amplitude * sin(v.vertex.x + v.vertex.z + _Time.z), 0.0f, 0.0f);
+				float4 displacement = float4(0.0f, amplitude * sin(_WaveSize* v.vertex.x + _WaveSize* v.vertex.z + _Time.z), 0.0f, 0.0f);
 				v.vertex += displacement;
 
 				vertOut o;
@@ -104,7 +106,7 @@ Shader "Unlit/WaveShader"
 
 				// Calculate specular reflections
 				float Ks = 1;
-				float specN = 5; // Values>>1 give tighter highlights
+				float specN = 10; // Values>>1 give tighter highlights
 				float3 V = normalize(_WorldSpaceCameraPos - v.worldVertex.xyz);
 
 				specN = 25; // We usually need a higher specular power when using Blinn-Phong
