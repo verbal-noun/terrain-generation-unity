@@ -45,7 +45,7 @@ Project is created with:
 Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length  2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency. The numbers shown below in the diagram represent the indices of each vertex in a 1D array but represented as a 3x3 grid.
 
 <p align="center">
-  <img src="Images/Vertices-Array-Diagram.png"  width="300" >
+  <img src="Images/Vertices-Array-Diagram.png"  width="100" >
 </p>
 
 The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm.

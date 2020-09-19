@@ -36,8 +36,8 @@ public class FreeCam : MonoBehaviour
         
         // Rotation of camera
         xRotation += Input.GetAxis("Mouse X") * rotateSpeed;
-        yRotation += Input.GetAxis("Mouse Y") * rotateSpeed;
-        cam.transform.rotation = Quaternion.Euler(-yRotation, xRotation, 0);
+        zRotation += Input.GetAxis("Mouse Y") * rotateSpeed;
+        cam.transform.rotation = Quaternion.Euler(-zRotation, xRotation, 0);
 
         // reset the position and view of the camera when space is pressed
         if (Input.GetKeyDown("space")) {
