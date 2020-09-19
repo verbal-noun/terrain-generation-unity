@@ -4,7 +4,7 @@
 
 ## Table of contents
 
-- [Team Members](#team-members)
+- [Tasks](#tasks)
 - [General Info](#general-info)
 - [Branch Syntax](#branch-syntax)
 - [Technologies](#technologies)
@@ -13,7 +13,7 @@
 - [Vertex Shader](#vertex-shader)
 - [Final Steps](#final-steps)
 
-## Team Members
+## Tasks
 
 | Name           |        Task        |       State |
 | :------------- | :----------------: | ----------: |
