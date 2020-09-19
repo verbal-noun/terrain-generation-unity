@@ -43,12 +43,12 @@ Project is created with:
 
 ## Diamond-Square implementation
 
-Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=8 value generated the most suitable terrain.
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=8 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
 
-The Diamond-Square algorithm was then implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
+The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
 <p align="center">
-  <img src="Images/Diamond-Square-Algorithm.png"  width="300" >
+  <img src="Images/Diamond-Square-Diagram.png"  width="300" >
 </p>
 
 As seen above, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
@@ -71,8 +71,39 @@ void RecursiveDSquare (int dim, float heightDiff) {
         .
         . // square steps
         .
-    }
 ```
+
+The DiamondStep function takes in the index of our "centre" vertice, and using the current dimension "dim" (which is recursively reduced as previously mentioned), calculate the index of the four corners. This is then used to find an average of the four corners and a random proportion of heightDiff is set as the new centre vertice height. As we can see in our RecursiveDSquare function, we perform the diamond step across every "dim" vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
+
+<p align="center">
+  <img src="Images/Diamond-Step-Diagram.png"  width="150" >
+</p>
+
+
+Following this, we go on to perform square steps. The SquareStep function is very similar to the DiamondStep function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid (hence only having access to 3 corner points), the average of the available 3 corner points is used instead.
+
+```c#
+        // perform square step on alternating rows
+        for (int z = (int) (dim * 0.5); z < size; z += dim) {
+            for (int x = 0; x < size; x += dim) {
+                SquareStep (z * size + x, dim, heightDiff);
+            }
+        }
+
+        // perform square step on other alternating rows
+        for (int z = 0; z < size; z += dim) {
+            for (int x = (int) (dim * 0.5); x < size; x += dim) {
+                SquareStep (z * size + x, dim, heightDiff);
+            }
+        }
+```
+From above, we perform the square steps every alternating "dim" rows, as better explained in the following diagram:
+
+<p align="center">
+  <img src="Images/Square-Step-Diagram.png"  width="300" >
+</p>
+
+In essence, both for loops iterate through the same order of vertices, just at different starting points. This is easier to implement as we can see in each for loop, the vertices being altered all occur on the same column.
 
 ## Camera Motion
 
