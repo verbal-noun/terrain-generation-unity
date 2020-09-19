@@ -1,20 +1,17 @@
 **The University of Melbourne**
 
-# COMP30019 – Graphics and Interaction
-
-# Project-1 README
-
-Remember that _"this document"_ should be `well written` and formatted **appropriately**. It should be easily readable within Github. Modify this file...
-this is just an example of different formating tools available for you. For help with the format you can find a guide [here](https://docs.github.com/en/github/writing-on-github).
+# Project-1 README | COMP30019 – Graphics and Interaction 
 
 ## Table of contents
 
 - [Team Members](#team-members)
 - [General Info](#general-info)
+- [Branch Syntax](#branch-syntax)
 - [Technologies](#technologies)
 - [Diamond-Square implementation](#diamond-square-implementation)
 - [Camera Motion](#camera-motion)
 - [Vertex Shader](#vertex-shader)
+- [Final Steps](#final-steps)
 
 ## Team Members
 
@@ -22,7 +19,7 @@ this is just an example of different formating tools available for you. For help
 | :------------- | :----------------: | ----------: |
 | Kaif Ahsan     | Phong Illumination |        Done |
 | Kaif Ahsan     |  Terrain Texture   | In Progress |
-| Khant Thurein Han |   Water Shader (Phong)    |     Done |
+| Khant Thurein Han |   Water Shader  |     Done |
 | Khant Thurein Han |   Diamond Square Algorithm    |     Done |
 | Hanyong Zhou |   Diamond Square Algorithm    |    Done |
 | Hanyong Zhou |   Camera Motion   |    Done |
@@ -30,20 +27,22 @@ this is just an example of different formating tools available for you. For help
 
 ## General info
 
-This is project - 1 ...
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Project 1's task is to create a realistic-looking terrain. The features implmented were Terrain generation (Diamond Square), Terrain Shader, Wave Shader, Sun & Light Movement, and Camera Motion & Collision. These features were developed in their respective branches and merged together to create the final product.
+## Branch Syntax
+- Main branch: master
+- Individual features: feature/{branch-name}
+- Test Development: develop
+
 
 ## Technologies
 
 Project is created with:
 
 - Unity 2019.4.3f1
-- Ipsum version: 2.33
-- Ament library version: 999
 
 ## Diamond-Square implementation
 
-Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=8 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
 
 The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
@@ -123,25 +122,24 @@ Finally, we multiply the heightDiff by a constant betwen 0-1, resulting in small
 You can use images/gif by adding them to a folder in your repo:
 
 <p align="center">
-  <img src="Gifs/Q1-1.gif"  width="300" >
+  <img src="Images/Q1-1.gif"  width="300" >
 </p>
 
 To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
-
 
 
 ## Vertex Shaders
 
 ### Phong Illumination
 
-Both the terrain and water uses the Phong illumination model for its custom shaders. The Phong illumination is made of 3 components: Ambient, Diffuse, and Specular. The specular component has been omitted for the terrain as a realistic terrain does not look shiny. The attenuation factor is set to a constant of 1 as the light source used in the project is a directional light. 
+Both the terrain and water uses the Phong illumination model for its custom shaders. The Phong illumination is made of 3 components: Ambient, Diffuse, and Specular. The specular component has been omitted for the terrain as a realistic terrain does not look shiny. The attenuation factor is set to a constant of 1 as the light source used in the project is a directional light.
 
 ## Wave generation
 
 The wave uses a custom shader that uses the Phong illumination model. The wave motion is created by the shader, by adding a displacement value to the height of a flat plane with respect to its x, z, and Time values. Using a sin function, this creates a a wave motion resembling a sin wave. Rather than using the built-in Plane 3D object in Unity, a custom Plane object was created so that it would contain more vertices/triagles for the wave motion to look smoother.
 
 <p align="center">
-  <img src="Gifs/Wave-Generation.gif"  width="300" >
+  <img src="Images/Wave-Generation.gif"  width="700" >
 </p>
 
 ## Sun Implementation
@@ -149,13 +147,8 @@ The wave uses a custom shader that uses the Phong illumination model. The wave m
 The sun rotation is implemented by a simple Z rotation script. By nesting the sphere and directional light in an empty game object, the sphere was set to a specfic distance relative to the parent game object. Rotating the parent object would thus rotate the sun and the direction of the light around the terrain.
 
 <p align="center">
-  <img src="Gifs/Sun-Implementation.gif"  width="300" >
+  <img src="Images/Sun-Implementation.gif"  width="700" >
 </p>
 
-**Now Get ready to complete all the tasks:**
-
-- [x] Read the handout for Project-1 carefully
-- [x] Modelling of fractal landscape
-- [x] Camera motion
-- [ ] Surface properties
-- [ ] Project organisation and documentation
+## Final Steps
+Once the individual features were implemented in their respective branches, we merged the features into the develop branch and began to piece together the features to create our final product. The terrain was generated by adding the GenerateTerrain.cs script onto an empty game object with the required components initialized, using a material which that implements the custom Phong shader. The rotating sun was created by nesting directional light inside a game object to simulate the sun rising/setting. The water by generating a flat plane and adding a material which implements the water shader. The camera motion utilised the FreeCam.cs script, which was added onto Main Camera. An empty game object is then also created to box the terrain in a collider which prevents the main camera from moving outside the terrain. A custom skybox was also added for extra effect. The last step was to tweak the values of these features to make it look as realistic as possible.
