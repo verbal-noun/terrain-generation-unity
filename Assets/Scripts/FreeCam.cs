@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Script for camera to handle movement and viewing directions using keyboard
+// and mouse
 public class FreeCam : MonoBehaviour
 {
     public float speed = 25f;
@@ -12,10 +14,14 @@ public class FreeCam : MonoBehaviour
     private float xRotation;
     private float yRotation;
     private Camera cam;
+
+    // Assigning the camera
     void Start()
     {
         cam = Camera.main;
+        // prevents cursor from moving off screen
         Cursor.lockState = CursorLockMode.Locked;
+        // set suitable initial position and viewing direction of camera
         cam.transform.position = new Vector3(terrainSize/2, startHeight, terrainSize/2);
         cam.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
@@ -33,6 +39,7 @@ public class FreeCam : MonoBehaviour
         yRotation += Input.GetAxis("Mouse Y") * rotateSpeed;
         cam.transform.rotation = Quaternion.Euler(-yRotation, xRotation, 0);
 
+        // reset the position and view of the camera when space is pressed
         if (Input.GetKeyDown("space")) {
             cam.transform.position = new Vector3(terrainSize/2, startHeight, terrainSize/2);
             cam.transform.rotation = Quaternion.Euler(0, 0, 0);
