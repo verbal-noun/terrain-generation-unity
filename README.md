@@ -42,7 +42,7 @@ Project is created with:
 
 ## Diamond-Square implementation
 
-Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=8 value generated the most suitable terrain.
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=7 value generated the most suitable terrain.
 
 The Diamond-Square algorithm was then implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
@@ -78,7 +78,7 @@ void RecursiveDSquare (int dim, float heightDiff) {
 You can use images/gif by adding them to a folder in your repo:
 
 <p align="center">
-  <img src="Gifs/Q1-1.gif"  width="300" >
+  <img src="Images/Q1-1.gif"  width="300" >
 </p>
 
 To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
