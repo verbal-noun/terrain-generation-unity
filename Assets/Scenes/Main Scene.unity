@@ -238,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422512174}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 29.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 701523679}
@@ -688,7 +688,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8abf7baa357c71540aa6472386fdc86c, type: 2}
+  - {fileID: 2100000, guid: 6f4bcd179c2ce2d46af4352c061e6d91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -725,6 +725,31 @@ MonoBehaviour:
   startHeight: 0
   maxHeightDiff: 20
   heightDepreciation: 0.6
+  layers:
+  - texture: {fileID: 2800000, guid: e83bd0f3c04c5e443a148cfe425b44a9, type: 3}
+    tint: {r: 0.7735849, g: 0.7290964, b: 0.10946955, a: 0}
+    tintStrength: 0.137
+    startHeight: 0
+    blendStrength: 0
+    textureScale: 7
+  - texture: {fileID: 2800000, guid: e7f5559edaf1a6246bf5378c944d156f, type: 3}
+    tint: {r: 0.20244437, g: 0.5, b: 0.051886797, a: 0}
+    tintStrength: 0.11
+    startHeight: 0.022
+    blendStrength: 0.03
+    textureScale: 7
+  - texture: {fileID: 2800000, guid: 849d7b2e0d840cf43ab179044822a1c7, type: 3}
+    tint: {r: 0.28235295, g: 0.30588236, b: 0.14509805, a: 0}
+    tintStrength: 0
+    startHeight: 0.2
+    blendStrength: 0.18
+    textureScale: 7
+  - texture: {fileID: 2800000, guid: 36b8623090af6ed4fabe834ce98615f3, type: 3}
+    tint: {r: 1, g: 1, b: 1, a: 0}
+    tintStrength: 0
+    startHeight: 0.28
+    blendStrength: 0.12
+    textureScale: 3
 --- !u!4 &1677489165
 Transform:
   m_ObjectHideFlags: 0

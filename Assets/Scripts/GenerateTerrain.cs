@@ -1,12 +1,11 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Generates mesh for a terrain using diamond square algorithm.
-public class GenerateTerrain : MonoBehaviour
-{
-    public int n=7;
+public class GenerateTerrain : MonoBehaviour {
+    public int n = 7;
     public int startHeight = 5;
     public float maxHeightDiff = 6.0f;
     public float heightDepreciation = 0.7f;
@@ -19,12 +18,12 @@ public class GenerateTerrain : MonoBehaviour
     int[] triangles;
     Vector2[] uvs;
 
-    void Start()
-    {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh; 
-        MakeTerrain();
-        UpdateMesh();
+    void Start () {
+        mesh = new Mesh ();
+        GetComponent<MeshFilter> ().mesh = mesh;
+        MakeTerrain ();
+        UpdateMesh ();
+        updateShader ();
     }
 
     void Update () {
@@ -32,6 +31,7 @@ public class GenerateTerrain : MonoBehaviour
         if (Input.GetKeyDown ("space")) {
             MakeTerrain ();
             UpdateMesh ();
+            updateShader ();
         }
     }
 
@@ -119,7 +119,7 @@ public class GenerateTerrain : MonoBehaviour
 
         // add random value to average height
         // float newY = average + random.NextDouble () * 2 * heightDiff - heightDiff);
-        float newY = average + Random.Range(-heightDiff, heightDiff);
+        float newY = average + Random.Range (-heightDiff, heightDiff);
 
         // set to new height
         Vector3 v = vertices[centre];
@@ -158,12 +158,12 @@ public class GenerateTerrain : MonoBehaviour
 
         // find average and calculate new height
         float average = (float) (totalHeight / validVertices);
-        float newY = average + Random.Range(-heightDiff, heightDiff);
+        float newY = average + Random.Range (-heightDiff, heightDiff);
         // set new height
         Vector3 v = vertices[centre];
         vertices[centre] = new Vector3 (v.x, newY, v.z);
     }
-    
+
     void UpdateMesh () {
         mesh.Clear ();
         mesh.vertices = vertices;
@@ -173,4 +173,70 @@ public class GenerateTerrain : MonoBehaviour
         GetComponent<MeshCollider> ().sharedMesh = mesh;
     }
 
+    // Variables to control the different kinds of colours 
+    //public Color[] baseColours;
+    // [Range (0, 1)]
+    // public float[] baseStartHeights;
+    // [Range (0, 1)]
+    // public float[] baseBlends;
+    const int textureSize = 512;
+    const TextureFormat textureFormat = TextureFormat.RGB565;
+    public TerrainLayer[] layers;
+
+    [System.Serializable]
+    public class TerrainLayer {
+        public Texture2D texture;
+        public Color tint;
+        [Range (0, 1)]
+        public float tintStrength;
+        [Range (0, 1)]
+        public float startHeight;
+        [Range (0, 1)]
+        public float blendStrength;
+        public float textureScale;
+    }
+
+    Texture2DArray generateTextureArray (Texture2D[] textures) {
+        Texture2DArray textureArray = new Texture2DArray (textureSize, textureSize,
+            textures.Length, textureFormat, true);
+
+        for (int i = 0; i < textures.Length; i++) {
+            textureArray.SetPixels (textures[i].GetPixels (), i);
+        }
+        textureArray.Apply ();
+
+        return textureArray;
+    }
+
+    // A method to pass min and max height to the shader 
+    void updateShader () {
+        // Calculate the max and min height 
+        float maxHeight = calculateMaxHeight ();
+        // Since every point under 0 is under water 
+        float minHeight = -0.5f;
+
+        // Get the material 
+        Material material = this.GetComponent<MeshRenderer> ().material;
+
+        // Pass max and min height into the material's shader 
+        material.SetFloat ("minHeight", minHeight);
+        material.SetFloat ("maxHeight", maxHeight);
+        material.SetInt ("layerCount", layers.Length);
+        material.SetColorArray ("baseColours", layers.Select (x => x.tint).ToArray ());
+        material.SetFloatArray ("baseStartHeights", layers.Select (x => x.startHeight).ToArray ());
+        material.SetFloatArray ("baseBlends", layers.Select (x => x.blendStrength).ToArray ());
+        material.SetFloatArray ("baseColourStrength", layers.Select (x => x.tintStrength).ToArray ());
+        material.SetFloatArray ("baseTextureScales", layers.Select (x => x.textureScale).ToArray ());
+        Texture2DArray texturesArray = generateTextureArray (layers.Select (x => x.texture).ToArray ());
+        material.SetTexture ("baseTextures", texturesArray);
+    }
+
+    float calculateMaxHeight () {
+        float value = 0f;
+        for (int i = 1; i <= n; i++) {
+            value += Mathf.Pow (heightDepreciation, i);
+        }
+
+        return startHeight + maxHeightDiff * value;
+    }
 }
