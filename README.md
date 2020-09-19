@@ -43,27 +43,29 @@ Project is created with:
 
 ## Diamond-Square implementation
 
-The Diamond-Square algorithm was implemented using recursion. 
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=8 value generated the most suitable terrain.
 
-You can include a code snippet here, but make sure to explain it!
-Do not just copy all your code, only explain the important parts.
+The Diamond-Square algorithm was then implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
+
+For example, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
+
 
 ```c#
-public class meshGenerator : MonoBehaviour
-{
-    //This function run once when Unity is in Play
-     void Start ()
-    {
-      GenerateMesh();
-    }
+void RecursiveDSquare (int dim, float heightDiff) {
+        // base case of lowest granularity step
+        if (dim == 1) {
+            return;
+        }
 
-    void GenerateMesh()
-    {
-      .
-      .
-      .
+        // perform diamond step on respective vertices
+        for (int z = 0; z < size - 1; z += dim) {
+            for (int x = 0; x < size - 1; x += dim) {
+                int centre = (int) ((z * size + x) + (dim * 0.5 * size + dim * 0.5));
+                DiamondStep (centre, dim, heightDiff);
+            }
+        }
+        
     }
-}
 ```
 
 ## Camera Motion
