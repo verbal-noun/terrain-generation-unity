@@ -72,7 +72,7 @@ void RecursiveDSquare (int dim, float heightDiff) {
         .
 ```
 
-The DiamondStep function takes in the index of our "centre" vertice, and using the current dimension "dim" (which is recursively reduced as previously mentioned), calculate the index of the four corners. This is then used to find an average of the four corners and a random proportion of heightDiff is set as the new centre vertice height. As we can see in our RecursiveDSquare function, we perform the diamond step across every "dim" vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
+The DiamondStep function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculate the index of the four corners. This is then used to find an average of the four corners and a random proportion of heightDiff is set as the new centre vertice height. As we can see in our RecursiveDSquare function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
 
 <p align="center">
   <img src="Images/Diamond-Step-Diagram.png"  width="150" >
@@ -80,6 +80,7 @@ The DiamondStep function takes in the index of our "centre" vertice, and using t
 
 
 Following this, we go on to perform square steps. The SquareStep function is very similar to the DiamondStep function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid (hence only having access to 3 corner points), the average of the available 3 corner points is used instead.
+ 
 
 ```c#
         // perform square step on alternating rows
@@ -99,7 +100,7 @@ Following this, we go on to perform square steps. The SquareStep function is ver
         .
         .
 ```
-From above, we perform the square steps every alternating "dim" rows, as better explained in the following diagram:
+From above, we perform the square steps every alternating `dim` rows, as better explained in the following diagram:
 
 <p align="center">
   <img src="Images/Square-Step-Diagram.png"  width="300" >
