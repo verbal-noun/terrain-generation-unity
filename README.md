@@ -1,17 +1,17 @@
 **The University of Melbourne**
 
-# COMP30019 – Graphics and Interaction
-
-# Project-1 README
+# Project-1 README | COMP30019 – Graphics and Interaction 
 
 ## Table of contents
 
 - [Team Members](#team-members)
 - [General Info](#general-info)
+- [Branch Syntax](#branch-syntax)
 - [Technologies](#technologies)
 - [Diamond-Square implementation](#diamond-square-implementation)
 - [Camera Motion](#camera-motion)
 - [Vertex Shader](#vertex-shader)
+- [Final Steps](#final-steps)
 
 ## Team Members
 
@@ -19,7 +19,7 @@
 | :------------- | :----------------: | ----------: |
 | Kaif Ahsan     | Phong Illumination |        Done |
 | Kaif Ahsan     |  Terrain Texture   | In Progress |
-| Khant Thurein Han |   Water Shader (Phong)    |     Done |
+| Khant Thurein Han |   Water Shader  |     Done |
 | Khant Thurein Han |   Diamond Square Algorithm    |     Done |
 | Hanyong Zhou |   Diamond Square Algorithm    |    Done |
 | Hanyong Zhou |   Camera Motion   |    Done |
@@ -29,10 +29,10 @@
 
 Project 1's task is to create a realistic-looking terrain. The features implmented were Terrain generation (Diamond Square), Terrain Shader, Wave Shader, Sun & Light Movement, and Camera Motion & Collision. These features were developed in their respective branches and merged together to create the final product.
 ## Branch Syntax
+- Main branch: master
+- Individual features: feature/{branch-name}
+- Test Development: develop
 
-Individual features: feature/{branch-name}
-Test Development: develop
-Main branch: master
 
 ## Technologies
 
@@ -47,7 +47,7 @@ Before the implementation of the algorithm, a flat square grid consisting of ver
 The Diamond-Square algorithm was then implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
 <p align="center">
-  <img src="Images/Diamond-Square-Algorithm.png"  width="300" >
+  <img src="Images/Diamond-Square-Diagram.png"  width="300" >
 </p>
 
 As seen above, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
@@ -84,12 +84,11 @@ You can use images/gif by adding them to a folder in your repo:
 To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
 
 
-
 ## Vertex Shaders
 
 ### Phong Illumination
 
-Both the terrain and water uses the Phong illumination model for its custom shaders. The Phong illumination is made of 3 components: Ambient, Diffuse, and Specular. The specular component has been omitted for the terrain as a realistic terrain does not look shiny. The attenuation factor is set to a constant of 1 as the light source used in the project is a directional light. 
+Both the terrain and water uses the Phong illumination model for its custom shaders. The Phong illumination is made of 3 components: Ambient, Diffuse, and Specular. The specular component has been omitted for the terrain as a realistic terrain does not look shiny. The attenuation factor is set to a constant of 1 as the light source used in the project is a directional light.
 
 ## Wave generation
 
