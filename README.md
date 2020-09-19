@@ -42,7 +42,11 @@ Project is created with:
 
 ## Diamond-Square implementation
 
-Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length  2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length  2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency. The numbers shown below in the diagram represent the indices of each vertex in a 1D array but represented as a 3x3 grid.
+
+<p align="center">
+  <img src="Images/Vertices-Array-Diagram.png"  width="300" >
+</p>
 
 The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
@@ -52,7 +56,7 @@ The Diamond-Square algorithm was implemented using recursion. Each iteration of 
 
 As seen above, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
 
-
+### Recursive Diamond Square Algorithm
 ```c#
 void RecursiveDSquare (int dim, float heightDiff) {
         // base case of lowest granularity step
@@ -72,14 +76,14 @@ void RecursiveDSquare (int dim, float heightDiff) {
         .
 ```
 
-The DiamondStep function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculates the index of the four corners. This is then used to find the average of the four corners plus a random proportion of heightDiff to be set as the new centre vertice height. As we can see in our RecursiveDSquare function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
+The `DiamondStep` function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculates the index of the four corners. This is then used to find the average of the four corners plus a random proportion of `heightDiff` to be set as the new centre vertice height. As we can see in our `RecursiveDSquare` function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
 
 <p align="center">
   <img src="Images/Diamond-Step-Diagram.png"  width="150" >
 </p>
 
 
-Following this, we go on to perform square steps. The SquareStep function is very similar to the DiamondStep function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid, the average of the available 3 corner points is used instead.
+Following this, we go on to perform square steps. The `SquareStep` function is very similar to the `DiamondStep` function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid, the average of the available 3 corner points is used instead.
  
 
 ```c#
@@ -115,18 +119,52 @@ In essence, both "for" loops iterate through the same pattern of vertices, just 
         RecursiveDSquare ((int) (dim * 0.5), newHeightDiff);
     }
 ```
-Finally, we multiply the heightDiff by a constant betwen 0-1, resulting in a smaller and smaller random height being added to the vertices on each iteration as per the typical Diamond Square Algorithm steps. We can also see how we are halving the "dim" value being used for the next iteration.
+Finally, we multiply the `heightDiff` by a constant betwen 0-1, resulting in a smaller and smaller random height being added to the vertices on each iteration as per the typical Diamond Square Algorithm steps. We can also see how we are halving the `dim` value being used for the next iteration.
+
+### Vertices to Triangles
+```c#
+        triangles = new int[(size - 1) * (size - 1) * 6];
+        for (int z = 0; z < size - 1; z++) {
+            for (int x = 0; x < size - 1; x++) {
+                triangles[(z * (size - 1) + x) * 6] = z * size + x;
+                triangles[(z * (size - 1) + x) * 6 + 1] = z * size + x + size;
+                triangles[(z * (size - 1) + x) * 6 + 2] = z * size + x + 1;
+                triangles[(z * (size - 1) + x) * 6 + 3] = z * size + x + 1;
+                triangles[(z * (size - 1) + x) * 6 + 4] = z * size + x + size;
+                triangles[(z * (size - 1) + x) * 6 + 5] = z * size + x + size + 1;
+            }
+        }
+```
+After altering the height of our vertices, the code above was used to define the vertices of each triangle which will represent our terrain. It calculates the index of appropriate vertices of each triangle in a clockwise direction to allow proper rendering. After this, we assign the vertice and triangle arrays to `mesh` and call `mesh.RecalculateNormals()`. This lets Unity handle the new normal calculations of each vertex so that shading is applied appropriately according to the incoming sunlight direction.
+
+### Result
+
+<p align="center">
+  <img src="Images/Terrain-Mesh.gif"  width="300" >
+</p>
+
+As seen, Unity represents the terrain as a mesh consisting of triangles. The terrain is being regenerated on each press of the `space` key.
 
 ## Camera Motion
 
-You can use images/gif by adding them to a folder in your repo:
+The movement of the camera is controlled by the typical `WASD` keys.
+```c#
+  float x = Input.GetAxis("Horizontal");
+  float z = Input.GetAxis("Vertical");
+  Vector3 move = cam.transform.right*x+cam.transform.forward*z;
+  controller.Move(move*speed*Time.deltaTime);
+```
+As we can see in the code above, we are utilising `cam.transform.right` and `cam.transform.forward` so that the movements of left, right, forward and backwards are local to the direction the camera is facing. Furthermore, movement is also relative to the time passed since the last frame, ensuring that the amount of movement being seen by our player is consistent throughout use.
 
-<p align="center">
-  <img src="Images/Q1-1.gif"  width="300" >
-</p>
+```c#
+  xRotation += Input.GetAxis("Mouse X") * rotateSpeed;
+  zRotation += Input.GetAxis("Mouse Y") * rotateSpeed;
+  cam.transform.rotation = Quaternion.Euler(-zRotation, xRotation, 0);
+```
+Similary, the rotation of our camera is handled by the current axis of the mouse. Hence any mouse movements will be used and added to the camera's rotation. This added rotation is represented by `Quaternion.Euler()` in which we rotate the camera around the local z-axis depending on our mouse's Y-axis movement, and a rotation around the local x-axis depending on our mouse's X-axis movement.
 
-To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
-
+### Camera collision
+Camera collision is handled using Unity's discrete collision in order to prevent collision into the terrain. Furthermore, by altering the workshop's cubescript, an invisible prism is set to surround the terrain, such that it can be provided a collision mesh and prevent the camera from exiting the boundaries.
 
 ## Vertex Shaders
 
