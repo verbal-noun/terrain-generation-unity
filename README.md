@@ -76,7 +76,7 @@ void RecursiveDSquare (int dim, float heightDiff) {
         .
 ```
 
-The `DiamondStep` function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculates the index of the four corners. This is then used to find the average of the four corners plus a random proportion of `heightDiff` to be set as the new centre vertice height. As we can see in our `RecursiveDSquare` function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
+The `DiamondStep` function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculates the index of the four corners. This is then used to find the average of the four corners plus a random proportion of `heightDiff` to be set as the new centre vertice height. As we can see in our `RecursiveDSquare` function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them. This is due to `dim` having a value of 2, hence in every 2 rows, we alter every 2 columns.
 
 <p align="center">
   <img src="Images/Diamond-Step-Diagram.png"  width="150" >
