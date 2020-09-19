@@ -40,6 +40,8 @@ Project is created with:
 
 ## Diamond-Square implementation
 
+The Diamond-Square algorithm was implemented using recursion. 
+
 You can include a code snippet here, but make sure to explain it!
 Do not just copy all your code, only explain the important parts.
 
