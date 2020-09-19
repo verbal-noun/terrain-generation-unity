@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Creates a rectangular prism that will act as a collider for the camera
+// so that it does not go beyond the boundaries
 public class BorderSetter : MonoBehaviour
 {
     public float size = 128f;
@@ -10,12 +12,15 @@ public class BorderSetter : MonoBehaviour
     MeshCollider meshCollider;
     Vector3[] vertices;
     int[] triangles;
+
     // Start is called before the first frame update
     void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         
+        // Altered version of cube creation from workshops so that we create a
+        // suitable prism to use as our borders
         vertices = new[] {
             new Vector3(size, borderHeight, size),
             new Vector3(0f, borderHeight, size),
@@ -59,6 +64,8 @@ public class BorderSetter : MonoBehaviour
             new Vector3(0f, borderHeight, 0f),            
             new Vector3(0f, 0f, 0f), 
         };
+
+        // Assign the triangles with the vertices
         triangles = new int[vertices.Length];
         for (int i = 0; i < vertices.Length; i++)
             triangles[i] = i;

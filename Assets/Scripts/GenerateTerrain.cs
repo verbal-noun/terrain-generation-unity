@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Generates mesh for a terrain using diamond square algorithm.
 public class GenerateTerrain : MonoBehaviour
 {
     public int n=7;
@@ -10,7 +12,6 @@ public class GenerateTerrain : MonoBehaviour
     public float heightDepreciation = 0.7f;
     private int size;
     private int numVertices;
-    // private System.Random random = new System.Random ();
 
     Mesh mesh;
     MeshCollider meshCollider;
@@ -162,6 +163,7 @@ public class GenerateTerrain : MonoBehaviour
         Vector3 v = vertices[centre];
         vertices[centre] = new Vector3 (v.x, newY, v.z);
     }
+    
     void UpdateMesh () {
         mesh.Clear ();
         mesh.vertices = vertices;
