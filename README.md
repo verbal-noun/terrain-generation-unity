@@ -1,6 +1,6 @@
 **The University of Melbourne**
 
-# Project-1 README | COMP30019 – Graphics and Interaction 
+# Project-1 README | COMP30019 – Graphics and Interaction
 
 ## Table of contents
 
@@ -15,24 +15,24 @@
 
 ## Team Members
 
-| Name           |        Task        |       State |
-| :------------- | :----------------: | ----------: |
-| Kaif Ahsan     | Phong Illumination |        Done |
-| Kaif Ahsan     |  Terrain Texture   | In Progress |
-| Khant Thurein Han |   Water Shader  |     Done |
-| Khant Thurein Han |   Diamond Square Algorithm    |     Done |
-| Hanyong Zhou |   Diamond Square Algorithm    |    Done |
-| Hanyong Zhou |   Camera Motion   |    Done |
-
+| Name              |           Task           | State |
+| :---------------- | :----------------------: | ----: |
+| Kaif Ahsan        |    Phong Illumination    |  Done |
+| Kaif Ahsan        | Terrain Colour & Texture |  Done |
+| Khant Thurein Han |       Water Shader       |  Done |
+| Khant Thurein Han | Diamond Square Algorithm |  Done |
+| Hanyong Zhou      | Diamond Square Algorithm |  Done |
+| Hanyong Zhou      |      Camera Motion       |  Done |
 
 ## General info
 
 Project 1's task is to create a realistic-looking terrain. The features implmented were Terrain generation (Diamond Square), Terrain Shader, Wave Shader, Sun & Light Movement, and Camera Motion & Collision. These features were developed in their respective branches and merged together to create the final product.
+
 ## Branch Syntax
+
 - Main branch: master
 - Individual features: feature/{branch-name}
 - Test Development: develop
-
 
 ## Technologies
 
@@ -42,16 +42,15 @@ Project is created with:
 
 ## Diamond-Square implementation
 
-Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length  2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length 2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
 
-The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
+The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm.
 
 <p align="center">
   <img src="Images/Diamond-Square-Diagram.png"  width="300" >
 </p>
 
 As seen above, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
-
 
 ```c#
 void RecursiveDSquare (int dim, float heightDiff) {
@@ -78,9 +77,7 @@ The DiamondStep function takes in the index of our `centre` vertice, and using t
   <img src="Images/Diamond-Step-Diagram.png"  width="150" >
 </p>
 
-
 Following this, we go on to perform square steps. The SquareStep function is very similar to the DiamondStep function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid, the average of the available 3 corner points is used instead.
- 
 
 ```c#
         // perform square step on alternating rows
@@ -100,6 +97,7 @@ Following this, we go on to perform square steps. The SquareStep function is ver
         .
         .
 ```
+
 From above, we perform the square steps every alternating `dim` rows, as better explained in the following diagram:
 
 <p align="center">
@@ -115,6 +113,7 @@ In essence, both "for" loops iterate through the same pattern of vertices, just 
         RecursiveDSquare ((int) (dim * 0.5), newHeightDiff);
     }
 ```
+
 Finally, we multiply the heightDiff by a constant betwen 0-1, resulting in a smaller and smaller random height being added to the vertices on each iteration as per the typical Diamond Square Algorithm steps. We can also see how we are halving the "dim" value being used for the next iteration.
 
 ## Camera Motion
@@ -126,7 +125,6 @@ You can use images/gif by adding them to a folder in your repo:
 </p>
 
 To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
-
 
 ## Vertex Shaders
 
@@ -151,4 +149,5 @@ The sun rotation is implemented by a simple Z rotation script. By nesting the sp
 </p>
 
 ## Final Steps
+
 Once the individual features were implemented in their respective branches, we merged the features into the develop branch and began to piece together the features to create our final product. The terrain was generated by adding the GenerateTerrain.cs script onto an empty game object with the required components initialized, using a material which that implements the custom Phong shader. The rotating sun was created by nesting directional light inside a game object to simulate the sun rising/setting. The water by generating a flat plane and adding a material which implements the water shader. The camera motion utilised the FreeCam.cs script, which was added onto Main Camera. An empty game object is then also created to box the terrain in a collider which prevents the main camera from moving outside the terrain. A custom skybox was also added for extra effect. The last step was to tweak the values of these features to make it look as realistic as possible.
