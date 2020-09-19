@@ -68,11 +68,9 @@ void RecursiveDSquare (int dim, float heightDiff) {
                 DiamondStep (centre, dim, heightDiff);
             }
         }
-
         .
+        . // square steps
         .
-        .
-        
     }
 ```
 
