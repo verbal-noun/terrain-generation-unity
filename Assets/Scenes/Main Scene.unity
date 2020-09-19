@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20de5f845c6f3e44adadf3b10b7842d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinSpeed: 8
+  spinSpeed: 6
 --- !u!4 &1191853357
 Transform:
   m_ObjectHideFlags: 0
@@ -747,10 +747,10 @@ MonoBehaviour:
     textureScale: 7
   - texture: {fileID: 2800000, guid: 36b8623090af6ed4fabe834ce98615f3, type: 3}
     tint: {r: 1, g: 1, b: 1, a: 0}
-    tintStrength: 0
-    startHeight: 0.28
-    blendStrength: 0.12
-    textureScale: 3
+    tintStrength: 0.36
+    startHeight: 0.31
+    blendStrength: 0.1
+    textureScale: 1
 --- !u!4 &1677489165
 Transform:
   m_ObjectHideFlags: 0

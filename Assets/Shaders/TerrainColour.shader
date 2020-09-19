@@ -1,14 +1,14 @@
 ﻿ Shader "Custom/NewSurfaceShader"
 {
     Properties
-    {
-        testTexture("Texture", 2D) = "white"{}
-        testScale("Scale", Float) = 1
+    {   
+        
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
+
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
@@ -17,12 +17,19 @@
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
-        const static int maxLayerCount = 8; 
+        // Maximum layer count 
+        const static int maxLayerCount = 8;
+        // Value to ensure very low heights work 
         const static float epsilion = 1E-4; 
+        // Number of available terrain layers 
         int layerCount; 
+        // Base colours 
         float3 baseColours[maxLayerCount];
+        // The start of different layers 
         float baseStartHeights[maxLayerCount];
+        // Strength of colour over texture 
         float baseColourStrength[maxLayerCount];
+        // Texture size 
         float baseTextureScales[maxLayerCount];
 
         // Values to control the blend 
@@ -79,7 +86,7 @@
             // For each layer of the texture calculate base colour and texture colour 
             for(int i = 0; i < layerCount; i++) {
                 // Set the colour according to height 
-                float drawStrength = inverseLerp(-baseBlends[i]/2, baseBlends[i]/2,
+                float drawStrength = inverseLerp(-baseBlends[i]/2-epsilion, baseBlends[i]/2,
                  heightPercent - baseStartHeights[i]);
 
                 // Calculating the base colour and texture colour 
@@ -92,6 +99,7 @@
 
         }
         ENDCG
+        
     }
     FallBack "Diffuse"
 }

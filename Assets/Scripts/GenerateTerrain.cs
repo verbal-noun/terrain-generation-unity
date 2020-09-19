@@ -173,14 +173,10 @@ public class GenerateTerrain : MonoBehaviour {
         GetComponent<MeshCollider> ().sharedMesh = mesh;
     }
 
-    // Variables to control the different kinds of colours 
-    //public Color[] baseColours;
-    // [Range (0, 1)]
-    // public float[] baseStartHeights;
-    // [Range (0, 1)]
-    // public float[] baseBlends;
+    // Variables to standardize texture size & format
     const int textureSize = 512;
     const TextureFormat textureFormat = TextureFormat.RGB565;
+    // Array to hold different textures 
     public TerrainLayer[] layers;
 
     [System.Serializable]
