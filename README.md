@@ -45,13 +45,13 @@ Project is created with:
 Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length  2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency. The numbers shown below in the diagram represent the indices of each vertex in a 1D array but represented as a 3x3 grid.
 
 <p align="center">
-  <img src="Images/Vertices-Array-Diagram.png"  width="100" >
+  <img src="Images/Vertices-Array-Diagram.png"  width="150" >
 </p>
 
 The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm.
 
 <p align="center">
-  <img src="Images/Diamond-Square-Diagram.png"  width="300" >
+  <img src="Images/Diamond-Square-Diagram.png"  width="350" >
 </p>
 
 As seen above, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
@@ -141,7 +141,7 @@ After altering the height of our vertices, the code above was used to define the
 ### Result
 
 <p align="center">
-  <img src="Images/Terrain-Mesh.gif"  width="300" >
+  <img src="Images/Terrain-Mesh.gif"  width="350" >
 </p>
 
 As seen, Unity represents the terrain as a mesh consisting of triangles. The terrain is being regenerated on each press of the `space` key.
