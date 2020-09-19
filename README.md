@@ -22,8 +22,11 @@ this is just an example of different formating tools available for you. For help
 | :------------- | :----------------: | ----------: |
 | Kaif Ahsan     | Phong Illumination |        Done |
 | Kaif Ahsan     |  Terrain Texture   | In Progress |
-| Student Name 2 |   Vertex Shader    |     Testing |
-| Student Name 3 |   README Format    |    Amazing! |
+| Khant Thurein Han |   Water Shader (Phong)    |     Done |
+| Khant Thurein Han |   Diamond Square Algorithm    |     Done |
+| Hanyong Zhou |   Diamond Square Algorithm    |    Done |
+| Hanyong Zhou |   Camera Motion   |    Done |
+
 
 ## General info
 
@@ -73,13 +76,15 @@ To create a gif from a video you can follow this [link](https://ezgif.com/video-
 
 ## Wave generation
 
+The wave uses a custom shader that uses the Phong illumination model. The wave motion is created by the shader, by adding a displacement value to the height of a flat plane with respect to its x, z, and Time values. 
+
 ## Vertex Shaders
 
 ### Phong Illumination
 
 ## Sun Implementation
 
-You can use emojis :+1: but do not over use it, we are looking for professional work. If you would not add them in your job, do not use them here! :shipit:
+The sun rotation is implemented by a simple Z rotation script. By nesting the sphere and directional light in an empty game object, the sphere was set to a specfic distance relative to the parent game object. Rotating the parent object would thus rotate the sun around the terrain.
 
 **Now Get ready to complete all the tasks:**
 
