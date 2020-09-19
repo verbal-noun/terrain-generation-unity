@@ -11,6 +11,7 @@ Shader "Unlit/WaveShader"
 	}
 	SubShader
 	{
+		//Required to make water Transparent
 		Tags {"Queue"="Transparent" "RenderType"="Transparent"}
 		
 		ZWrite Off
