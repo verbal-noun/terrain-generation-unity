@@ -17,9 +17,13 @@
         #pragma target 3.0
 
         const static int maxColourCount = 8; 
+        const static float epsilion = 1E-4; 
         int baseColourCount; 
         float3 baseColours[maxColourCount];
         float baseStartHeights[maxColourCount];
+
+        // Values to control the blend 
+        float baseBlends[maxColourCount];
 
         // Values to dictate the max and mix heights of our terrain     
         float minHeight; 
@@ -54,7 +58,9 @@
             float heightPercent  = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
             for(int i = 0; i < baseColourCount; i++) {
                 // Set the colour according to height 
-                float drawStrength = saturate(sign(heightPercent - baseStartHeights[i]));
+                //float drawStrength = saturate(sign(heightPercent - baseStartHeights[i]));
+                float drawStrength = inverseLerp(-baseBlends[i]/2, baseBlends[i]/2,
+                 heightPercent - baseStartHeights[i]);
                 o.Albedo = o.Albedo * (1 - drawStrength) + baseColours[i] * drawStrength;
             }  
         }

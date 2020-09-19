@@ -174,7 +174,10 @@ public class GenerateTerrain : MonoBehaviour {
 
     // Variables to control the different kinds of colours 
     public Color[] baseColours;
+    [Range (0, 1)]
     public float[] baseStartHeights;
+    [Range (0, 1)]
+    public float[] baseBlends;
     // A method to pass min and max height to the shader 
     void updateShader () {
         // Calculate the max and min height 
@@ -191,6 +194,7 @@ public class GenerateTerrain : MonoBehaviour {
         material.SetInt ("baseColourCount", baseColours.Length);
         material.SetColorArray ("baseColours", baseColours);
         material.SetFloatArray ("baseStartHeights", baseStartHeights);
+        material.SetFloatArray ("baseBlends", baseBlends);
     }
 
     float calculateMaxHeight () {
