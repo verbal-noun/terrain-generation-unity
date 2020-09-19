@@ -21,9 +21,17 @@ public class GenerateTerrain : MonoBehaviour {
     void Start () {
         mesh = new Mesh ();
         GetComponent<MeshFilter> ().mesh = mesh;
+        Material material = this.GetComponent<MeshRenderer> ().material;
         MakeTerrain ();
         UpdateMesh ();
-        updateShader ();
+
+        // Calculate min and max height of terrain 
+        // Calculate the max and min height 
+        float maxHeight = calculateMaxHeight ();
+        // Since every point under 0 is under water 
+        float minHeight = -0.5f;
+        // Update terrain texture 
+        this.GetComponent<TerrainShader> ().updateShader (minHeight, maxHeight);
     }
 
     void Update () {
@@ -31,7 +39,10 @@ public class GenerateTerrain : MonoBehaviour {
         if (Input.GetKeyDown ("space")) {
             MakeTerrain ();
             UpdateMesh ();
-            updateShader ();
+            // Update terrain texture 
+            float maxHeight = calculateMaxHeight ();
+            float minHeight = -0.5f;
+            this.GetComponent<TerrainShader> ().updateShader (minHeight, maxHeight);
         }
     }
 
@@ -171,60 +182,6 @@ public class GenerateTerrain : MonoBehaviour {
         mesh.uv = uvs;
         mesh.RecalculateNormals ();
         GetComponent<MeshCollider> ().sharedMesh = mesh;
-    }
-
-    // Variables to standardize texture size & format
-    const int textureSize = 512;
-    const TextureFormat textureFormat = TextureFormat.RGB565;
-    // Array to hold different textures 
-    public TerrainLayer[] layers;
-
-    [System.Serializable]
-    public class TerrainLayer {
-        public Texture2D texture;
-        public Color tint;
-        [Range (0, 1)]
-        public float tintStrength;
-        [Range (0, 1)]
-        public float startHeight;
-        [Range (0, 1)]
-        public float blendStrength;
-        public float textureScale;
-    }
-
-    Texture2DArray generateTextureArray (Texture2D[] textures) {
-        Texture2DArray textureArray = new Texture2DArray (textureSize, textureSize,
-            textures.Length, textureFormat, true);
-
-        for (int i = 0; i < textures.Length; i++) {
-            textureArray.SetPixels (textures[i].GetPixels (), i);
-        }
-        textureArray.Apply ();
-
-        return textureArray;
-    }
-
-    // A method to pass min and max height to the shader 
-    void updateShader () {
-        // Calculate the max and min height 
-        float maxHeight = calculateMaxHeight ();
-        // Since every point under 0 is under water 
-        float minHeight = -0.5f;
-
-        // Get the material 
-        Material material = this.GetComponent<MeshRenderer> ().material;
-
-        // Pass max and min height into the material's shader 
-        material.SetFloat ("minHeight", minHeight);
-        material.SetFloat ("maxHeight", maxHeight);
-        material.SetInt ("layerCount", layers.Length);
-        material.SetColorArray ("baseColours", layers.Select (x => x.tint).ToArray ());
-        material.SetFloatArray ("baseStartHeights", layers.Select (x => x.startHeight).ToArray ());
-        material.SetFloatArray ("baseBlends", layers.Select (x => x.blendStrength).ToArray ());
-        material.SetFloatArray ("baseColourStrength", layers.Select (x => x.tintStrength).ToArray ());
-        material.SetFloatArray ("baseTextureScales", layers.Select (x => x.textureScale).ToArray ());
-        Texture2DArray texturesArray = generateTextureArray (layers.Select (x => x.texture).ToArray ());
-        material.SetTexture ("baseTextures", texturesArray);
     }
 
     float calculateMaxHeight () {
