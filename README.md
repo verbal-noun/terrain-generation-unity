@@ -74,17 +74,21 @@ You can use images/gif by adding them to a folder in your repo:
 
 To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
 
-## Wave generation
 
-The wave uses a custom shader that uses the Phong illumination model. The wave motion is created by the shader, by adding a displacement value to the height of a flat plane with respect to its x, z, and Time values. 
-
-<p align="center">
-  <img src="Gifs/Wave-Generation.gif"  width="300" >
-</p>
 
 ## Vertex Shaders
 
 ### Phong Illumination
+
+Both the terrain and water uses the Phong illumination model for its custom shaders. The Phong illumination is made of 3 components: Ambient, Diffuse, and Specular. The specular component has been omitted for the terrain as a realistic terrain does not look shiny. The attenuation factor is set to a constant of 1 as the light source used in the project is a directional light. 
+
+## Wave generation
+
+The wave uses a custom shader that uses the Phong illumination model. The wave motion is created by the shader, by adding a displacement value to the height of a flat plane with respect to its x, z, and Time values. Using a sin function, this creates a a wave motion resembling a sin wave. Rather than using the built-in Plane 3D object in Unity, a custom Plane object was created so that it would contain more vertices/triagles for the wave motion to look smoother.
+
+<p align="center">
+  <img src="Gifs/Wave-Generation.gif"  width="300" >
+</p>
 
 ## Sun Implementation
 
