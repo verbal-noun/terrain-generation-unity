@@ -42,7 +42,7 @@ Project is created with:
 
 ## Diamond-Square implementation
 
-Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides consisting of 2^n+1 vertices. In our case, we decided that an n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
+Before the implementation of the algorithm, a flat square grid consisting of vertices is generated with sides of length  2^n+1 vertices. In our case, we decided that a n=7 value generated the most suitable terrain. Our diamond square algorithm will go on to alter the height of these vertices in the grid. These vertices are stored in a 1D array and the 2D position of the vertices will be calculated throughout the algorithm to improve efficiency.
 
 The Diamond-Square algorithm was implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
@@ -72,14 +72,14 @@ void RecursiveDSquare (int dim, float heightDiff) {
         .
 ```
 
-The DiamondStep function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculate the index of the four corners. This is then used to find an average of the four corners and a random proportion of heightDiff is set as the new centre vertice height. As we can see in our RecursiveDSquare function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
+The DiamondStep function takes in the index of our `centre` vertice, and using the current dimension `dim` (which is recursively reduced as previously mentioned), calculates the index of the four corners. This is then used to find the average of the four corners plus a random proportion of heightDiff to be set as the new centre vertice height. As we can see in our RecursiveDSquare function, we perform the diamond step across every `dim` vertices in both the x and z axis. For example, on the second iteration of a 4x4 grid, the following red vertices would have the DiamondStep function called upon them.
 
 <p align="center">
   <img src="Images/Diamond-Step-Diagram.png"  width="150" >
 </p>
 
 
-Following this, we go on to perform square steps. The SquareStep function is very similar to the DiamondStep function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid (hence only having access to 3 corner points), the average of the available 3 corner points is used instead.
+Following this, we go on to perform square steps. The SquareStep function is very similar to the DiamondStep function, except that the corners used are in the shape of a diamond instead. In addition, if the SquareStep is performed on a vertice that sits on the edge of the grid, the average of the available 3 corner points is used instead.
  
 
 ```c#
@@ -106,7 +106,7 @@ From above, we perform the square steps every alternating `dim` rows, as better 
   <img src="Images/Square-Step-Diagram.png"  width="300" >
 </p>
 
-In essence, both for loops iterate through the same order of vertices, just at different starting points. This is easier to implement as we can see in each for loop, the vertices being altered all occur on the same column.
+In essence, both "for" loops iterate through the same pattern of vertices, just at different starting points. This is easier to implement as the vertices being altered all occur on the same column as shown in the diagram.
 
 ```c#
         // reduce random height being added
@@ -115,8 +115,7 @@ In essence, both for loops iterate through the same order of vertices, just at d
         RecursiveDSquare ((int) (dim * 0.5), newHeightDiff);
     }
 ```
-Finally, we multiply the heightDiff by a constant betwen 0-1, resulting in smaller and smaller random height being added to the vertices on each iteration as per the typical Diamond Square Algorithm steps. We can also see how we are halving the "dim" value being used for the next iteration.
-
+Finally, we multiply the heightDiff by a constant betwen 0-1, resulting in a smaller and smaller random height being added to the vertices on each iteration as per the typical Diamond Square Algorithm steps. We can also see how we are halving the "dim" value being used for the next iteration.
 
 ## Camera Motion
 
