@@ -96,6 +96,9 @@ Following this, we go on to perform square steps. The SquareStep function is ver
                 SquareStep (z * size + x, dim, heightDiff);
             }
         }
+        .
+        .
+        .
 ```
 From above, we perform the square steps every alternating "dim" rows, as better explained in the following diagram:
 
@@ -104,6 +107,16 @@ From above, we perform the square steps every alternating "dim" rows, as better 
 </p>
 
 In essence, both for loops iterate through the same order of vertices, just at different starting points. This is easier to implement as we can see in each for loop, the vertices being altered all occur on the same column.
+
+```c#
+        // reduce random height being added
+        float newHeightDiff = (float) (heightDiff * heightDepreciation);
+
+        RecursiveDSquare ((int) (dim * 0.5), newHeightDiff);
+    }
+```
+Finally, we multiply the heightDiff by a constant betwen 0-1, resulting in smaller and smaller random height being added to the vertices on each iteration as per the typical Diamond Square Algorithm steps. We can also see how we are halving the "dim" value being used for the next iteration.
+
 
 ## Camera Motion
 
