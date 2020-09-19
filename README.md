@@ -47,7 +47,11 @@ Before the implementation of the algorithm, a flat square grid consisting of ver
 
 The Diamond-Square algorithm was then implemented using recursion. Each iteration of the recursion consisted of one or more square and diamond steps. It is worth noting that on a diamond/square step, the width and heights of the corner points were always relative to the current iteration of the algorithm. 
 
-For example, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
+<p align="center">
+  <img src="Images/Diamond-Square-Algorithm.png"  width="300" >
+</p>
+
+As seen above, if we started with a 4x4 grid, the first iteration would start with a diamond step that used the initial corner points, forming a square with dimension 4. On the second iteration, there would then be multiple diamond steps each with corner points that formed a square with dimension 2. As we can see, each iteration would half the dimension. Using this property, we half the dimension in each recursive step until we reach the base case of dimension = 1.
 
 
 ```c#
@@ -64,6 +68,10 @@ void RecursiveDSquare (int dim, float heightDiff) {
                 DiamondStep (centre, dim, heightDiff);
             }
         }
+
+        .
+        .
+        .
         
     }
 ```
