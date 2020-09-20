@@ -178,11 +178,9 @@ Camera collision is handled using Unity's discrete collision in order to prevent
 
 To provide a realistic took to the terrains different colours were initially added to the terrain based on the height of the terrain. However, to give a realistic look, terrain textures were used. Using a standard surface shader, these textures were blended to attain a natural look whilst providing us control on the look and feel of the terrain.
 
-| Without Texture | With Textures |
-| :-------------- | :-----------: |
-
-
-|
+| Without Texture                      |          With Texture          |
+| :----------------------------------- | :----------------------------: |
+| ![No texture](Images/no-texture.png) | ![texture](Images/texture.png) |
 
 ## Vertex Shaders
 

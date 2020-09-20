@@ -774,25 +774,25 @@ MonoBehaviour:
     tintStrength: 0.138
     startHeight: 0
     blendStrength: 0
-    textureScale: 7
+    textureScale: 0
   - texture: {fileID: 2800000, guid: e7f5559edaf1a6246bf5378c944d156f, type: 3}
     tint: {r: 0.20392159, g: 0.5019608, b: 0.050980397, a: 0}
     tintStrength: 0.5
     startHeight: 0.024
     blendStrength: 0.03
-    textureScale: 7
+    textureScale: 0
   - texture: {fileID: 2800000, guid: 849d7b2e0d840cf43ab179044822a1c7, type: 3}
     tint: {r: 0.28235295, g: 0.30588236, b: 0.14509805, a: 0}
     tintStrength: 0
     startHeight: 0.2
     blendStrength: 0.1
-    textureScale: 5
+    textureScale: 0
   - texture: {fileID: 2800000, guid: 36b8623090af6ed4fabe834ce98615f3, type: 3}
     tint: {r: 1, g: 1, b: 1, a: 0}
     tintStrength: 0.36
     startHeight: 0.32
     blendStrength: 0.1
-    textureScale: 1
+    textureScale: 0
 --- !u!1 &1939151456
 GameObject:
   m_ObjectHideFlags: 0
