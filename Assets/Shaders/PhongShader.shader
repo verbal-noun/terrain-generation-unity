@@ -23,7 +23,7 @@ Shader "PhongShader" {
             // For our sun light source 
             Tags { "LightMode" = "ForwardBase"}
 
-        CGPROGRAM 
+            CGPROGRAM 
             #pragma vertex vert
             #pragma fragment frag 
 
@@ -98,7 +98,7 @@ Shader "PhongShader" {
                 return float4(color, 1.0);
             }
 
-        ENDCG 
+            ENDCG 
         }
     }
 }

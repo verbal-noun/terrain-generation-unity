@@ -789,7 +789,7 @@ MonoBehaviour:
     textureScale: 2
   - texture: {fileID: 2800000, guid: 36b8623090af6ed4fabe834ce98615f3, type: 3}
     tint: {r: 1, g: 1, b: 1, a: 0}
-    tintStrength: 0.36
+    tintStrength: 0.38
     startHeight: 0.32
     blendStrength: 0.1
     textureScale: 1
