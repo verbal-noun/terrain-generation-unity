@@ -1,12 +1,11 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Generates mesh for a terrain using diamond square algorithm.
-public class GenerateTerrain : MonoBehaviour
-{
-    public int n=7;
+public class GenerateTerrain : MonoBehaviour {
+    public int n = 7;
     public int startHeight = 5;
     public float maxHeightDiff = 6.0f;
     public float heightDepreciation = 0.7f;
@@ -18,13 +17,17 @@ public class GenerateTerrain : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
     Vector2[] uvs;
+    Material material;
 
-    void Start()
-    {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh; 
-        MakeTerrain();
-        UpdateMesh();
+    void Start () {
+        mesh = new Mesh ();
+        GetComponent<MeshFilter> ().mesh = mesh;
+        material = this.GetComponent<MeshRenderer> ().material;
+        MakeTerrain ();
+        UpdateMesh ();
+        // Generate terrain textures 
+        UpdateTerrain ();
+
     }
 
     void Update () {
@@ -32,6 +35,8 @@ public class GenerateTerrain : MonoBehaviour
         if (Input.GetKeyDown ("space")) {
             MakeTerrain ();
             UpdateMesh ();
+            // Generate the textures 
+            UpdateTerrain ();
         }
     }
 
@@ -119,7 +124,7 @@ public class GenerateTerrain : MonoBehaviour
 
         // add random value to average height
         // float newY = average + random.NextDouble () * 2 * heightDiff - heightDiff);
-        float newY = average + Random.Range(-heightDiff, heightDiff);
+        float newY = average + Random.Range (-heightDiff, heightDiff);
 
         // set to new height
         Vector3 v = vertices[centre];
@@ -158,12 +163,12 @@ public class GenerateTerrain : MonoBehaviour
 
         // find average and calculate new height
         float average = (float) (totalHeight / validVertices);
-        float newY = average + Random.Range(-heightDiff, heightDiff);
+        float newY = average + Random.Range (-heightDiff, heightDiff);
         // set new height
         Vector3 v = vertices[centre];
         vertices[centre] = new Vector3 (v.x, newY, v.z);
     }
-    
+
     void UpdateMesh () {
         mesh.Clear ();
         mesh.vertices = vertices;
@@ -173,4 +178,22 @@ public class GenerateTerrain : MonoBehaviour
         GetComponent<MeshCollider> ().sharedMesh = mesh;
     }
 
+    // Function to update texture of terrain 
+    void UpdateTerrain () {
+        // Calculate min and max height of terrain 
+        // Calculate the max and min height 
+        float maxHeight = CalculateMaxHeight ();
+        // Since every point under 0 is under water 
+        float minHeight = -0.5f;
+        // Update terrain texture 
+        GetComponent<TerrainShader> ().UpdateShader (material, minHeight, maxHeight);
+    }
+    float CalculateMaxHeight () {
+        float value = 0f;
+        for (int i = 1; i <= n; i++) {
+            value += Mathf.Pow (heightDepreciation, i);
+        }
+
+        return startHeight + maxHeightDiff * value;
+    }
 }

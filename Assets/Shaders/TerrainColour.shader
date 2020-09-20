@@ -1,16 +1,14 @@
 ﻿ Shader "Custom/NewSurfaceShader"
 {
     Properties
-    {
-        _Color ("Color", Color) = (1,1,1,1)
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
+    {   
+        
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
+
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
@@ -19,35 +17,89 @@
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
-        sampler2D _MainTex;
+        // Maximum layer count 
+        const static int maxLayerCount = 8;
+        // Value to ensure very low heights work 
+        const static float epsilion = 1E-4; 
+        // Number of available terrain layers 
+        int layerCount; 
+        // Base colours 
+        float3 baseColours[maxLayerCount];
+        // The start of different layers 
+        float baseStartHeights[maxLayerCount];
+        // Strength of colour over texture 
+        float baseColourStrength[maxLayerCount];
+        // Texture size 
+        float baseTextureScales[maxLayerCount];
+
+        // Values to control the blend 
+        float baseBlends[maxLayerCount];
+
+        // Values to dictate the max and mix heights of our terrain     
+        float minHeight; 
+        float maxHeight;
+
+        // Texture 
+        sampler2D testTexture;
+        float testScale;
+
+        UNITY_DECLARE_TEX2DARRAY(baseTextures);
 
         struct Input
         {
-            float2 uv_MainTex;
+            // Getting world input 
+            float3 worldPos;
+            float3 worldNormal;
         };
 
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
+        // half _Glossiness;
+        // half _Metallic;
+        // fixed4 _Color;
 
-        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
+        
         // #pragma instancing_options assumeuniformscaling
         UNITY_INSTANCING_BUFFER_START(Props)
-            // put more per-instance properties here
+        // put more per-instance properties here
         UNITY_INSTANCING_BUFFER_END(Props)
 
+        float inverseLerp(float min, float max, float val) {
+            return saturate((val - min) / (max - min));
+        }
+
+        // A function to calculate the texture colour 
+        float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
+			float3 scaledWorldPos = worldPos / scale;
+			float3 xProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.y, scaledWorldPos.z, textureIndex)) * blendAxes.x;
+			float3 yProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.z, textureIndex)) * blendAxes.y;
+			float3 zProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.y, textureIndex)) * blendAxes.z;
+			return xProjection + yProjection + zProjection;
+		}
+
         void surf (Input IN, inout SurfaceOutputStandard o)
-        {
-            // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = c.rgb;
-            // Metallic and smoothness come from slider variables
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
+        {   
+            // Extracting the height of the point in the world 
+            float heightPercent  = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
+            // The normals of textures 
+            float3 blendAxes = abs(IN.worldNormal);
+            blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
+
+            // For each layer of the texture calculate base colour and texture colour 
+            for(int i = 0; i < layerCount; i++) {
+                // Set the colour according to height 
+                float drawStrength = inverseLerp(-baseBlends[i]/2-epsilion, baseBlends[i]/2,
+                 heightPercent - baseStartHeights[i]);
+
+                // Calculating the base colour and texture colour 
+                float3 baseColour = baseColours[i] * baseColourStrength[i];
+				float3 textureColour = triplanar(IN.worldPos, baseTextureScales[i], blendAxes, i) * (1-baseColourStrength[i]);
+
+                // Outputting the value 
+				o.Albedo = o.Albedo * (1-drawStrength) + (baseColour + textureColour) * drawStrength;
+            }  
+
         }
         ENDCG
+        
     }
     FallBack "Diffuse"
 }

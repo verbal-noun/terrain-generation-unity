@@ -238,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422512174}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 29.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 701523679}
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20de5f845c6f3e44adadf3b10b7842d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinSpeed: 10
+  spinSpeed: 6
 --- !u!4 &1191853357
 Transform:
   m_ObjectHideFlags: 0
@@ -651,6 +651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1677489165}
+  - component: {fileID: 1677489167}
   - component: {fileID: 1677489164}
   - component: {fileID: 1677489163}
   - component: {fileID: 1677489162}
@@ -688,6 +689,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 2100000, guid: 6f4bcd179c2ce2d46af4352c061e6d91, type: 2}
   - {fileID: 2100000, guid: 8abf7baa357c71540aa6472386fdc86c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -754,6 +756,43 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &1677489167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677489161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ff9ecc63d13534dbc89915a9157f1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layers:
+  - texture: {fileID: 2800000, guid: e83bd0f3c04c5e443a148cfe425b44a9, type: 3}
+    tint: {r: 0.7725491, g: 0.7294118, b: 0.10980393, a: 0}
+    tintStrength: 0.138
+    startHeight: 0
+    blendStrength: 0
+    textureScale: 0
+  - texture: {fileID: 2800000, guid: e7f5559edaf1a6246bf5378c944d156f, type: 3}
+    tint: {r: 0.20392159, g: 0.5019608, b: 0.050980397, a: 0}
+    tintStrength: 0.5
+    startHeight: 0.024
+    blendStrength: 0.03
+    textureScale: 0
+  - texture: {fileID: 2800000, guid: 849d7b2e0d840cf43ab179044822a1c7, type: 3}
+    tint: {r: 0.28235295, g: 0.30588236, b: 0.14509805, a: 0}
+    tintStrength: 0
+    startHeight: 0.2
+    blendStrength: 0.1
+    textureScale: 0
+  - texture: {fileID: 2800000, guid: 36b8623090af6ed4fabe834ce98615f3, type: 3}
+    tint: {r: 1, g: 1, b: 1, a: 0}
+    tintStrength: 0.36
+    startHeight: 0.32
+    blendStrength: 0.1
+    textureScale: 0
 --- !u!1 &1939151456
 GameObject:
   m_ObjectHideFlags: 0
