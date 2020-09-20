@@ -29,7 +29,7 @@ public class TerrainShader : MonoBehaviour {
         material = this.GetComponent<MeshRenderer> ().material;
     }
 
-    Texture2DArray generateTextureArray (Texture2D[] textures) {
+    Texture2DArray GenerateTextureArray (Texture2D[] textures) {
         Texture2DArray textureArray = new Texture2DArray (textureSize, textureSize,
             textures.Length, textureFormat, true);
 
@@ -41,7 +41,7 @@ public class TerrainShader : MonoBehaviour {
         return textureArray;
     }
 
-    public void updateShader (float minHeight, float maxHeight) {
+    public void UpdateShader (Material material, float minHeight, float maxHeight) {
 
         // Pass max and min height into the material's shader 
         material.SetFloat ("minHeight", minHeight);
@@ -53,7 +53,7 @@ public class TerrainShader : MonoBehaviour {
         material.SetFloatArray ("baseColourStrength", layers.Select (x => x.tintStrength).ToArray ());
         material.SetFloatArray ("baseTextureScales", layers.Select (x => x.textureScale).ToArray ());
 
-        Texture2DArray texturesArray = generateTextureArray (layers.Select (x => x.texture).ToArray ());
+        Texture2DArray texturesArray = GenerateTextureArray (layers.Select (x => x.texture).ToArray ());
         material.SetTexture ("baseTextures", texturesArray);
     }
 }

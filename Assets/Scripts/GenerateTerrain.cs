@@ -17,21 +17,17 @@ public class GenerateTerrain : MonoBehaviour {
     Vector3[] vertices;
     int[] triangles;
     Vector2[] uvs;
+    Material material;
 
     void Start () {
         mesh = new Mesh ();
         GetComponent<MeshFilter> ().mesh = mesh;
-        Material material = this.GetComponent<MeshRenderer> ().material;
+        material = this.GetComponent<MeshRenderer> ().material;
         MakeTerrain ();
         UpdateMesh ();
+        // Generate terrain textures 
+        UpdateTerrain ();
 
-        // Calculate min and max height of terrain 
-        // Calculate the max and min height 
-        float maxHeight = calculateMaxHeight ();
-        // Since every point under 0 is under water 
-        float minHeight = -0.5f;
-        // Update terrain texture 
-        this.GetComponent<TerrainShader> ().updateShader (minHeight, maxHeight);
     }
 
     void Update () {
@@ -39,10 +35,8 @@ public class GenerateTerrain : MonoBehaviour {
         if (Input.GetKeyDown ("space")) {
             MakeTerrain ();
             UpdateMesh ();
-            // Update terrain texture 
-            float maxHeight = calculateMaxHeight ();
-            float minHeight = -0.5f;
-            this.GetComponent<TerrainShader> ().updateShader (minHeight, maxHeight);
+            // Generate the textures 
+            UpdateTerrain ();
         }
     }
 
@@ -184,7 +178,17 @@ public class GenerateTerrain : MonoBehaviour {
         GetComponent<MeshCollider> ().sharedMesh = mesh;
     }
 
-    float calculateMaxHeight () {
+    // Function to update texture of terrain 
+    void UpdateTerrain () {
+        // Calculate min and max height of terrain 
+        // Calculate the max and min height 
+        float maxHeight = CalculateMaxHeight ();
+        // Since every point under 0 is under water 
+        float minHeight = -0.5f;
+        // Update terrain texture 
+        GetComponent<TerrainShader> ().UpdateShader (material, minHeight, maxHeight);
+    }
+    float CalculateMaxHeight () {
         float value = 0f;
         for (int i = 1; i <= n; i++) {
             value += Mathf.Pow (heightDepreciation, i);
